@@ -1,0 +1,95 @@
+languageType: PYTHON3
+playBookVersion: 1.0.0
+appId: fed89ea34aed4578a56716c02a9328de
+appVersion: 1.0.0
+appName: cve
+appAlias: cve漏洞库
+description: 查询安全漏洞库包括漏洞描述、严重性等信息
+brief: CVE 是国际著名的安全漏洞库，也是对已知漏洞和安全缺陷的标准化名称的列表，它是一个由企业界、政府界和学术界综合参与的国际性组织，采取一种非盈利的组织形式，其使命是为了能更加快速而有效地鉴别、发现和修复软件产品的安全漏洞。
+tags:
+  - HTTP
+categories:
+  name: 漏洞管理
+contactInfo:
+  name: "ABT 安博通"
+  url: http://www.abtnetworks.com/welcome.html
+  email: "XXX@sapling.com.cn"
+  phone: XXXXX
+  description: XXXXXXXXXXXX
+licenseInfo:
+  name: 授权信息
+  url: https://XXXXX/LICENSE.md
+instanceEnabled: false
+actions:
+  - name: cve_list
+    alias: cve查询
+    description: 查询cve的描述、严重性等信息，每页固定50条数据
+    parameters:
+      - name: page
+        description: "当前页码"
+        example: 1
+        value: ""
+        defaultValue: 1
+        required: true
+        schema:
+          type: INTEGER
+        ui:
+          type: text
+          uiName: "当前页码"
+      - name: keyword
+        description: "关键字"
+        example: 'solar'
+        value: ""
+        defaultValue: 'solar'
+        required: true
+        schema:
+          type: STRING
+        ui:
+          type: text
+          uiName: "关键字"
+    returns:
+      schema:
+        type: JSON_OBJECT
+      example: "{\"total\":2254,\"max_score\":13.023272,\"hits\":[{\"_index\":\"nvd_cve_1655193211\",\"_type\":\"_doc\",\"_id\":\"CVE-2019-12661\",\"_score\":13.023272,\"_source\":{\"cve\":{\"description\":{\"description_data\":[{\"lang\":\"en\",\"value\":\"A vulnerability in a Virtualization Manager (VMAN) related CLI command of Cisco IOS XE Software could allow an authenticated, local attacker to execute arbitrary commands on the underlying Linux operating system with a privilege level of root. The vulnerability is due to insufficient validation of arguments passed to a specific VMAN CLI command on the affected device. An attacker who has administrator access to an affected device could exploit this vulnerability by including malicious input as the argument of an affected command. A successful exploit could allow the attacker to execute arbitrary commands on the device with root privileges, which may lead to complete system compromise.\"}]}},\"lastModifiedDate\":\"2019-10-09T23:45Z\",\"impact\":{\"baseMetricV2\":{\"severity\":\"HIGH\",\"exploitabilityScore\":\"3.9\",\"obtainAllPrivilege\":false,\"userInteractionRequired\":false,\"obtainOtherPrivilege\":false,\"cvssV2\":{\"accessComplexity\":\"LOW\",\"confidentialityImpact\":\"COMPLETE\",\"availabilityImpact\":\"COMPLETE\",\"integrityImpact\":\"COMPLETE\",\"baseScore\":\"7.2\",\"vectorString\":\"AV:L/AC:L/Au:N/C:C/I:C/A:C\",\"version\":\"2.0\",\"accessVector\":\"LOCAL\",\"authentication\":\"NONE\"},\"impactScore\":10,\"acInsufInfo\":false,\"obtainUserPrivilege\":false},\"baseMetricV3\":{\"exploitabilityScore\":\"0.8\",\"cvssV3\":{\"baseSeverity\":\"MEDIUM\",\"confidentialityImpact\":\"HIGH\",\"attackComplexity\":\"LOW\",\"scope\":\"UNCHANGED\",\"attackVector\":\"LOCAL\",\"availabilityImpact\":\"HIGH\",\"integrityImpact\":\"HIGH\",\"privilegesRequired\":\"HIGH\",\"baseScore\":\"6.7\",\"vectorString\":\"CVSS:3.1/AV:L/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H\",\"version\":\"3.1\",\"userInteraction\":\"NONE\"},\"impactScore\":\"5.9\"}},\"publishedDate\":\"2019-09-25T21:15Z\",\"public_display\":\"CVE-2019-12661\",\"cvssV2Severity\":\"HIGH\",\"cvssV3Severity\":\"MEDIUM\",\"severity\":\"MEDIUM\",\"totalCPE\":0}}]}"
+      description: cve scan result
+      fieldComments:
+        - name: public_display
+          value: ID
+        - name: value
+          value: 描述
+        - name: severity
+          value: 严重性
+        - name: publishedDate
+          value: 发布日期
+      views:
+        - type: FORM
+          dataSource: "${{data}}"
+          subject: "基础信息"
+          table:
+            direction: "Vertical"
+            columns:
+              - title: "总记录数"
+                value:
+                  syntax: "${{total}}"
+        - type: TABLE
+          dataSource: "${{data.hits}}"
+          subject: "查询记录"
+          table:
+            columns:
+              - title: "ID"
+                value:
+                  syntax: "${{_source.public_display}}"
+              - title: "描述"
+                value:
+                  syntax: "${{_source.cve.description.description_data[0].value}}"
+              - title: "严重性"
+                value:
+                  syntax: "${{_source.severity}}"
+              - title: "发布日期"
+                value:
+                  syntax: "${{_source.publishedDate}}"
+          uiCss:
+            lineHeight: "26px"
+image:
+  smallIcon:
+  largeImage: data:image/png;base64,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
